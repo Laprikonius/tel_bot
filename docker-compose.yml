@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./ssl:/etc/nginx/ssl
+      - ./app:/var/www/html
+    depends_on:
+      - php
+      - mysql
+    networks:
+      - telegram_bot
+
+  php:
+    build: ./php
+    container_name: php
+    volumes:
+      - ./app:/var/www/html
+    networks:
+      - telegram_bot
+
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - telegram_bot
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin
+    environment:
+      PMA_HOST: mysql
+    ports:
+      - "1703:80"
+    networks:
+      - telegram_bot
+
+volumes:
+  mysql_data:
+
+
+networks:
+  telegram_bot:
