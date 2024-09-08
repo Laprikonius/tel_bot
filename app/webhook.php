@@ -14,25 +14,24 @@ if (isset($update['message']) && $update['message']['text'] === '/start') {
     sendMessage($telegramToken, $chatId, $message);
 }
 
-if (isset($update['callback_query'])) {
-    $callback_query = $update['callback_query'];
-    $callback_query_id = $callback_query['id'];
-    $callback_query_data = $callback_query['data'];
-    $chat_id = $callback_query['message']['chat']['id'];
-
-    // $response_text = "Получены данные: $callback_query_data $callback_query_id";
-
-    // file_get_contents("https://api.telegram.org/bot$telegramToken/sendMessage?" . http_build_query([
-    //     'chat_id' => $chat_id,
-    //     'text' => $response_text
-    // ]));
-
-    //sendMessageTrello();
-}
-
 function sendMessage($telegramToken, $chatId, $message) {
     $url = "https://api.telegram.org/bot{$telegramToken}/sendMessage";
     $apiKey = '5b75242defe45912180724c99f96a2e7';
+    if (isset($update['callback_query'])) {
+        $callback_query = $update['callback_query'];
+        $callback_query_id = $callback_query['id'];
+        $callback_query_data = $callback_query['data'];
+        $chat_id = $callback_query['message']['chat']['id'];
+    
+        // $response_text = "Получены данные: $callback_query_data $callback_query_id";
+    
+        // file_get_contents("https://api.telegram.org/bot$telegramToken/sendMessage?" . http_build_query([
+        //     'chat_id' => $chat_id,
+        //     'text' => $response_text
+        // ]));
+    
+        //sendMessageTrello();
+    }
     $keyboard = [
         'inline_keyboard' => [
             [
@@ -49,7 +48,6 @@ function sendMessage($telegramToken, $chatId, $message) {
         'chat_id' => $chatId,
         'text' => $message,
         'reply_markup' => json_encode($keyboard),
-        'parse_mode' => 'Markdown'
     ];
 
     $ch = curl_init();
