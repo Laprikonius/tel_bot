@@ -1,23 +1,19 @@
 <?php
 $apiKey = '5b75242defe45912180724c99f96a2e7';
-$apiToken = 'ATTA88be6c4c0a461e84c5bba28d6c20347cf96584edfbd7a30ee784eba25f07b044E34DA57C';
+$apiToken = 'TRELLO_API_KEY';
 
 $boardName = 'my_new_test_board';
 
 $url = 'https://api.trello.com/1/members/me/boards?key=' . $apiKey . '&token=' . $apiToken;
 
-// Виконання запиту
 $response = file_get_contents($url);
 
-// Перевірка на успіх
 if ($response === FALSE) {
     die('Error fetching boards');
 }
 
-// Декодування JSON відповіді
 $boards = json_decode($response, true);
 
-// Виведення списку дошок
 $createBoard = false;
 foreach ($boards as $board) {
     echo "Board Name: " . $board['name'] . " - Board ID: " . $board['id'] . "</br>";
